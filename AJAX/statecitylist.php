@@ -8,7 +8,7 @@ include("Common_model.php");
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title></title>
-	<script type="text/javascript" src="../jquery-3.6.1.min.js"></script>
+	<script type="text/javascript" src="jquery-3.6.1.min.js"></script>
 </head>
 <body>
 	<?php
