@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<script src="../jquery-3.6.1.min.js"></script>
+</head>
+<body>
+	<div id="div1"><h2>Let jquery AJAX Change this text</h2></div>
+	<button>Get Extenal Content</button>
+
+	<script>
+		$(document).ready(function(){
+			$('button').click(function(){
+				$('#div1').load('../setcontent.html', 
+					function(responseTxt, statusTxt, xhr){
+						//console.log(xhr);
+						//console.log(statusTxt);
+						//console.log(responseTxt);
+						if(statusTxt == "success")
+							alert("External Content Loaded Successfully!!");
+						if(statusTxt == "error")
+							alert("Error : " + xhr.status + ": " + xhr.statusText);
+					});
+			});
+		});
+	</script>
+
+</body>
+</html>

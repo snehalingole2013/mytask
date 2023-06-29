@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<script src="../jquery-3.6.1.min.js"></script>
+</head>
+<body>
+	<div id="div1"><h2>Users List</h2></div>
+	
+	<div>
+		<table cellspacing="0" cellpadding="2" border="1" width="60%">
+			<thead>
+				<tr>
+					<th>Sr No</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Website</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody id="ulist">
+				<tr>
+					<td colspan="4">Processing...</td>
+				</tr>
+			</tbody>
+			<!-- <tfoot></tfoot> -->
+		</table>
+	</div>
+
+	<div id="u_task" style="display: none;">
+		<h2 id="u_name">User Task</h2>
+		<table cellspacing="0" cellpadding="2" border="1" width="60%">
+			<thead>
+				<tr>
+					<th>Sr No</th>
+					<th>User Id</th>
+					<th>Title</th>
+					<th>Completed</th>
+				</tr>
+			</thead>
+			<tbody id="usertask">
+				<tr>
+					<td colspan="4">Processing...</td>
+				</tr>
+			</tbody>
+			<!-- <tfoot></tfoot> -->
+		</table>
+	</div>
+
+
+	<script>
+
+		$(document).ready(function(){
+			// $("#u_task").hide();
+			$.ajax({
+				"url":"https://jsonplaceholder.typicode.com/users",
+				"type":"GET",
+				// "dataType":"", //dataType json is not required as we are getting reponse 'header' as 'application/json'. So code will understand the response string as json 
+				// "data":"", // data is not required as we are not sending any data to URL
+				"success":function(res){
+					if(res.length > 0){
+						var len = res.length;
+
+						$("#ulist").html(""); //used to remove 'processing html'
+						/*for(var i=0; i < len; i++ ){
+							var ele = res[ i ];
+
+							//string literal / template literal
+							//benifit while using variables. It is not needed to concat string using plus + operater
+							//syntax `test string ${myvar}`;
+
+							var str = `
+								<tr>
+									<td>${i+1}</td>
+									<td>${ele.name}</td>
+									<td>${ele.email}</td>
+									<td>${ele.website}</td>
+								</tr>
+							`; 
+							// console.log(str);
+							$("#ulist").append(str); //add one by one element
+						}*/
+
+						var html_str ='';
+						$.each(res,function(key, ele){
+							// console.log(ele);
+							// console.log(key);
+							html_str +=`<tr>
+									<td>${key+1}</td>
+									<td>${ele.name}</td>
+									<td>${ele.email}</td>
+									<td>${ele.website}</td>
+									<td><button data-id=${ele.id} class ="btn-primary todo"
+										data-name="${ele.name}">ToDo</button></td>
+								</tr>`; 
+								//Add a link or button in existing table ^
+						});
+						$("#ulist").html(html_str);
+						
+						//and that link on click Do AJAX call
+						$(".todo").bind("click", function(e){
+							// console.log('abc')
+							var mybtn = $(this);
+							mybtn.attr("disabled", "true");
+
+
+							// In AJAX call pass userId to the given url
+							// use GET method to pass the data
+							var userId =  mybtn.attr("data-id");
+							var userName = mybtn.attr("data-name");
+
+							$.ajax({
+								"url":"https://jsonplaceholder.typicode.com/todos?userId="+userId,
+								"type":"GET",
+								"success":function(result){
+									// check the response received from the url using console.log
+									 // console.log(result);
+									if (result.length > 0) {
+
+										$("#usertask").html("");
+										var task ="";
+										$.each(result, function(key, element){
+											// Add data in the new table of todo
+											task += `<tr>
+												<td>${key+1}</td>
+												<td>${element.userId}</td>
+												<td>${element.title}</td>
+												<td>${element.completed}</td>
+												</tr>`
+										});
+										$("#usertask").html(task);
+										$("#u_task").show();
+										$('#u_name').text(userName+" Task List");
+									}
+
+									mybtn.removeAttr("disabled");
+								}
+
+							});
+
+						}); 
+					}
+					// console.log(res);
+				}
+
+
+			}) // get users ajax close
+
+
+		});
+	</script>
+
+</body>
+</html>
