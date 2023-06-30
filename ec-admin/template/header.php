@@ -1,7 +1,7 @@
 <?php 
 session_start();
-define("PROJECT_URL", "http://localhost/Snehalprog/ec-admin"); 
-$root_path = $_SERVER['DOCUMENT_ROOT']."/Snehalprog/ec-admin"; 
+define("PROJECT_URL", "http://localhost/mytask/ec-admin"); 
+$root_path = $_SERVER['DOCUMENT_ROOT']."/mytask/ec-admin"; 
 
 if (!isset($_SESSION['user'])) 
 {
