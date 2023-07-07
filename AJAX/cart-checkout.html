@@ -4,8 +4,6 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Cart</title>
-	 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js">
-	 </script>
 	<script src="jquery-3.6.1.min.js"></script>
 </head>
 <body>
@@ -25,51 +23,90 @@
         	<tr>
         		<td>1</td>
         		<td>Mobile</td>
-        		<td><input type="number" name="quantity" value="4"></td>
-        		<td>14500</td>
-        		<td>58000</td>
+        		<td><input class="pr_qty" type="number" name="quantity" value="1"></td>
+        		<td class="pr_rate">14500</td>
+        		<td class="pr_total">58000</td>
         	</tr>
         	<tr>
         		<td>2</td>
         		<td>Mobile Charger</td>
-        		<td><input type="number" name="quantity" value="2"></td>
-        		<td>1500</td>
-        		<td>3000</td>
+        		<td><input class="pr_qty" type="number" name="quantity" value="1"></td>
+        		<td class="pr_rate">1500</td>
+        		<td class="pr_total">3000</td>
         	</tr>
         	<tr>
         		<td>3</td>
         		<td>Shoes</td>
-        		<td><input type="number" name="quantity" value="1"></td>
-        		<td>1300</td>
-        		<td>1300</td>
+        		<td><input class="pr_qty" type="number" name="quantity" value="1"></td>
+        		<td class="pr_rate">1300</td>
+        		<td class="pr_total">1300</td>
         	</tr>
-        	<tr>
-        		<td>4</td>
-        		<td>Headphones</td>
-        		<td><input type="number" name="quantity" value="2"></td>
-        		<td>2700</td>
-        		<td>5400</td>
-        	</tr>
-        	<tr>
-        		<td>5</td>
-        		<td>Lipstick</td>
-        		<td><input type="number" name="quantity" value="3"></td>
-        		<td>750</td>
-        		<td>2250</td>
-        	</tr>
-        	<tr>
-        		<td>6</td>
-        		<td>Gaming Pad</td>
-        		<td><input type="number" name="quantity" value="1"></td>
-        		<td>2890</td>
-        		<td>2890</td>
-        	</tr>
-        	
         </tbody>
-
+        <tfoot>
+        	<tr>
+        		<td colspan="4"><b>Total</b></td>
+        		<td id="pr_t">300</td>
+        	</tr>
+        	<tr>
+        		<td colspan="4"><b>Tax(%)</b></td>
+        		<td id="pr_tax">10</td>
+        	</tr>
+        	<tr>
+        		<td colspan="4"><b>Tax Amount</b></td>
+        		<td id="pr_taxamount">300</td>
+        	</tr>
+        	<tr>
+        		<td colspan="4"><b>Final Total</b></td>
+        		<td id="pr_finalTotal">300</td>
+        	</tr>
+        </tfoot>
 
 	<script>
-		
+		$(document).ready(function(){
+			$(".pr_qty").change(function(){
+				//get Qunatity for the current element where change event triggered
+				var qty = $(this).val();
+
+				//get Rate from Row where event is triggered
+				//Find the class by going to the Row
+				//Find class using current element $(this)
+				var rate = $(this).parents("tr").find(".pr_rate").text();
+
+				//get total		
+				var prTotal = qty * rate;
+
+				//Write the total in td. Find class using current element $(this)
+				$(this).parents("tr").find(".pr_total").text( prTotal ) ;
+				console.log(rate);
+				//
+				getTotal();
+
+			});
+
+			$(".pr_qty").each(function(idx, ele){
+				$(ele).trigger("change");
+			});
+
+			//This function is created to calculate sub-total,tax, final total
+			//It will call at every change event
+			function getTotal(){
+				var total =0;
+				$(".pr_total").each(function(index, ele){
+					total += parseInt($(ele).text());
+
+				});
+
+				$("#pr_t").text(total);
+				var tax = $("#pr_tax").text();
+				var taxamount = total * tax/100;
+				$("#pr_taxamount").text(taxamount);
+				// console.log(tax);
+				var finalT = total + taxamount;
+				$("#pr_finalTotal").text(finalT);
+
+			}
+
+		})
 	</script>
 </body>
 </html>
