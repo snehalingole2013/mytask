@@ -23,21 +23,30 @@
         	<tr>
         		<td>1</td>
         		<td>Mobile</td>
-        		<td><input class="pr_qty" type="number" name="quantity" value="1"></td>
+        		<td><button class="qty_dec">-</button>
+        			<input class="pr_qty" type="text" name="quantity" value="1">
+        			<button class="qty_inc">+</button>
+        		</td>
         		<td class="pr_rate">14500</td>
         		<td class="pr_total">58000</td>
         	</tr>
         	<tr>
         		<td>2</td>
         		<td>Mobile Charger</td>
-        		<td><input class="pr_qty" type="number" name="quantity" value="1"></td>
+        		<td><button class="qty_dec">-</button>
+        			<input class="pr_qty" type="text" name="quantity" value="1">
+        			<button class="qty_inc">+</button>
+        		</td>
         		<td class="pr_rate">1500</td>
         		<td class="pr_total">3000</td>
         	</tr>
         	<tr>
         		<td>3</td>
         		<td>Shoes</td>
-        		<td><input class="pr_qty" type="number" name="quantity" value="1"></td>
+        		<td><button class="qty_dec">-</button>
+        			<input class="pr_qty" type="text" name="quantity" value="1">
+        			<button class="qty_inc">+</button>
+        		</td>
         		<td class="pr_rate">1300</td>
         		<td class="pr_total">1300</td>
         	</tr>
@@ -63,25 +72,25 @@
 
 	<script>
 		$(document).ready(function(){
-			$(".pr_qty").change(function(){
+			function calculate(ele){
 				//get Qunatity for the current element where change event triggered
-				var qty = $(this).val();
+				var qty = ele.val();
 
 				//get Rate from Row where event is triggered
 				//Find the class by going to the Row
-				//Find class using current element $(this)
-				var rate = $(this).parents("tr").find(".pr_rate").text();
+				//Find class using current element ele
+				var rate = ele.parents("tr").find(".pr_rate").text();
 
 				//get total		
 				var prTotal = qty * rate;
 
-				//Write the total in td. Find class using current element $(this)
-				$(this).parents("tr").find(".pr_total").text( prTotal ) ;
+				//Write the total in td. Find class using current element ele
+				ele.parents("tr").find(".pr_total").text( prTotal ) ;
 				console.log(rate);
 				//
 				getTotal();
 
-			});
+			};
 
 			$(".pr_qty").each(function(idx, ele){
 				$(ele).trigger("change");
@@ -105,6 +114,24 @@
 				$("#pr_finalTotal").text(finalT);
 
 			}
+
+			$('.qty_inc').click(function(){
+					// var q = $(this).val();
+					var i = $(this).parents('tr').find('.pr_qty').val();
+					if (i>=1) {
+						$(this).parents('tr').find('.pr_qty').val(parseInt(i)+1);
+					}
+				calculate($(this).parents('tr').find('.pr_qty'));
+			});
+
+			$('.qty_dec').click(function(){
+					// var q = $(this).val();
+					var i = $(this).parents('tr').find('.pr_qty').val();
+					if (i>1) {
+						$(this).parents('tr').find('.pr_qty').val(parseInt(i)-1);
+					}
+				calculate($(this).parents('tr').find('.pr_qty'));
+			});
 
 		})
 	</script>
